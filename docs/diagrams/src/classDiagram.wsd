@@ -1,0 +1,95 @@
+@startuml Open House List
+
+title Class Diagram
+
+abstract class User {
+  + name:  string
+  + birthDate: string
+  + phone: string
+  + status: string
+  + abstract toCreate()
+  + abstract toUpdate()
+  + toDisable()
+}
+
+class Guest extends User {
+  + selectGift()
+  + unselectGift()
+}
+
+class Owner extends User {
+  + createList()
+  + addItemAtList()
+  + turnClosedList()
+  + turnOpenedList()
+}
+
+class Product {
+  + name: string
+  + description: string
+  + imageUrl: string
+  + suggestedPrice: number
+  + status: string
+  + toCreate()
+  + toUpdate()
+  + toDisable()
+}
+
+class Item {
+  + productId: string
+  + subscriber: string //guestId
+  + price: number
+}
+
+enum StatusList {
+  opened
+  closed
+}
+
+class List {
+  + status: StatusList
+  + datetime date
+  + title: string
+  + description: string
+  + thankYouMessage: string
+  + highlightImageUrl: string
+  + address: string
+  + latitude: number
+  + longitude: number
+  + ownerId: string
+}
+
+class ListGuest {
+  + guestId: string
+  + listId: string
+}
+
+class ListItem {
+  + listId: string
+  + itemId: string
+}
+
+enum StatusInvite {
+  accepted
+  recused
+  pending
+}
+
+class Invites {
+  + listId: string
+  + guestId: string
+  + status: StatusInvite
+}
+
+ListGuest --> List
+ListGuest --> Guest
+Item --> Product
+ListItem --> Item
+ListItem --> List
+List --> Owner
+Invites --> List
+Invites --> Guest
+Item --> Guest
+
+
+@enduml
