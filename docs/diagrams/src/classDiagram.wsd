@@ -75,21 +75,23 @@ enum StatusInvite {
   pending
 }
 
-class Invites {
+class Invite {
   + listId: string
   + guestId: string
   + status: StatusInvite
 }
 
-ListGuest --> List
-ListGuest --> Guest
-Item --> Product
-ListItem --> Item
-ListItem --> List
-List --> Owner
-Invites --> List
-Invites --> Guest
-Item --> Guest
+ListGuest ..> List
+ListGuest ..> Guest
+Item ..> Product
+ListItem ..> Item
+ListItem ..> List
+List ..> Owner
+List --> StatusList
+Invite ..> List
+Invite ..> Guest
+Invite ..> StatusInvite
+Item ..> Guest
 
 
 @enduml
