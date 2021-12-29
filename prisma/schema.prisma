@@ -7,8 +7,71 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserStatus {
+  active
+  inactive
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id         String      @id
+  email      String      @unique
+  name       String?
+  phone      String?
+  birthDate  String?
+  status     UserStatus  @default(active)
+  lists      List[]
+  listGuests ListGuest[]
+  listItems  Item[]
+}
+
+enum ListStatus {
+  opened
+  closed
+}
+
+model List {
+  id                String      @id
+  status            ListStatus? @default(closed)
+  datetime          DateTime?
+  title             String
+  description       String?
+  thankYouMessage   String?
+  highlightImageUrl String?
+  address           String?
+  owner             User        @relation(fields: [ownerId], references: [id])
+  ownerId           String
+  listGuests        ListGuest[]
+  items             ListItem[]
+}
+
+model ListGuest {
+  id      String @id
+  guestId String
+  guest   User   @relation(fields: [guestId], references: [id])
+  listId  String
+  list    List   @relation(fields: [listId], references: [id])
+}
+
+model Product {
+  id             String   @id
+  name           String
+  description    String?
+  imageUrl       String?
+  suggestedPrice Decimal?
+  status         String
+}
+
+model Item {
+  id         String     @id
+  guestId    String
+  subscriber User       @relation(fields: [guestId], references: [id])
+  items   ListItem[]
+}
+
+model ListItem {
+  id     String @id
+  listId String
+  list   List   @relation(fields: [listId], references: [id])
+  itemId String
+  item   Item   @relation(fields: [itemId], references: [id])
 }
